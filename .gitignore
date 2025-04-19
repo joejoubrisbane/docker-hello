@@ -1,0 +1,12 @@
+# 排除所有 node_modules
+**/node_modules
+
+# 排除依賴快取
+**/package-lock.json
+
+# 排除環境與 log
+.env
+*.log
+
+# 不上傳 macOS 的 metadata
+.DS_Store
