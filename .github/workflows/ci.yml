@@ -23,11 +23,24 @@ jobs:
         npm install
         npm run build
 
+    - name: Serve React Frontend
+      working-directory: ./app/client
+      run: |
+        npm install -g serve
+        serve -s build -l 3000 &
+
     - name: Install and Start Backend
       working-directory: ./app/server
       run: |
         npm install
         nohup node index.js &
+
+    - name: Wait for frontend to be ready
+      run: |
+        echo "Waiting for frontend to start..."
+        until curl -s http://localhost:3000 | grep "Hello React"; do
+          sleep 1
+        done
 
     - name: Install and Run Playwright Tests
       working-directory: ./app/playwright
@@ -35,3 +48,10 @@ jobs:
         npm install
         npx playwright install
         npx playwright test
+    
+    - name: Upload Playwright Test Artifacts
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-artifacts
+        path: app/playwright/test-results/
