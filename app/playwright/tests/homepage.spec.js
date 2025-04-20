@@ -2,6 +2,6 @@
 const { test, expect } = require('@playwright/test');
 
 test('homepage should have Hello React', async ({ page }) => {
-  await page.goto('http://localhost:3000');
+    await page.goto('/');
   await expect(page.locator('h1')).toHaveText('Hello React from Docker');
 });
